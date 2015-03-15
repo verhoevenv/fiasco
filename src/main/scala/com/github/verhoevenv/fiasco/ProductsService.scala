@@ -6,7 +6,7 @@ import akka.pattern.ask
 import scala.concurrent.ExecutionContext
 import scala.concurrent.duration._
 import com.github.verhoevenv.fiasco.request.ProductsRequestActor
-import com.github.verhoevenv.fiasco.request.ProductsRequestActor.AllProducts
+import com.github.verhoevenv.fiasco.request.ProductsRequestActor.{Product, AllProducts}
 import spray.routing._
 import spray.http._
 import MediaTypes._
@@ -41,11 +41,12 @@ trait ProductsService extends HttpService {
     } ~
     path("products" / IntNumber) { id =>
       get {
-          if(id < 1000) {
-            complete("Received GET request for product " + id)
-          } else {
-            complete(HttpResponse(StatusCodes.BadRequest))
-          }
+        val request : ActorRef = actorRefFactory.actorOf(Props[ProductsRequestActor])
+        val answer = request ? Product(id)
+        onSuccess(answer) {
+          case Some(v) => complete(v.asInstanceOf[String])
+          case None => complete(HttpResponse(StatusCodes.BadRequest))
+        }
       }
     }
 }
