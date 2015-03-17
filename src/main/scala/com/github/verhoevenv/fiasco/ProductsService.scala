@@ -20,7 +20,7 @@ class ProductsServiceActor extends Actor with ProductsService {
   // this actor only runs our route, but you could add
   // other things here, like request stream processing
   // or timeout handling
-  def receive = runRoute(productsRoute)
+  def receive = runRoute(allRoutes)
 }
 
 
@@ -28,6 +28,11 @@ class ProductsServiceActor extends Actor with ProductsService {
 trait ProductsService extends HttpService {
   implicit val timeout = Timeout(5 seconds)
   implicit val executionContext : ExecutionContext = actorRefFactory.dispatcher
+
+  def allRoutes : Route =
+    pathPrefix("api" / "v1") {
+      productsRoute
+    }
 
   val productsRoute : Route =
     path("products") {

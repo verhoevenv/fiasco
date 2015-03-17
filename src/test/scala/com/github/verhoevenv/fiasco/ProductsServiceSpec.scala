@@ -11,19 +11,19 @@ class ProductsServiceSpec extends Specification with Specs2RouteTest with Produc
   "ProductsService" should {
 
     "return a list of products when queried without id" in {
-      Get("/products") ~> productsRoute ~> check {
+      Get("/api/v1/products") ~> allRoutes ~> check {
         responseAs[String] must contain("products")
       }
     }
 
     "return a single product when queried with a known id" in {
-      Get("/products/1") ~> productsRoute ~> check {
+      Get("/api/v1/products/1") ~> allRoutes ~> check {
         responseAs[String] must contain("1")
       }
     }
 
     "not handle a product with an unknown id" in {
-      Get("/products/1337") ~> productsRoute ~> check {
+      Get("/api/v1/products/1337") ~> allRoutes ~> check {
         status must be(StatusCodes.BadRequest)
       }
     }
