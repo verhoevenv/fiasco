@@ -4,6 +4,8 @@ import akka.actor.Actor
 import spray.routing._
 
 
+
+
 class AllRoutesActor extends Actor with AllRoutes {
 
   // the HttpService trait defines only one abstract member, which
@@ -16,11 +18,12 @@ class AllRoutesActor extends Actor with AllRoutes {
   def receive = runRoute(allRoutes)
 }
 
-trait AllRoutes extends HttpService with ProductsService {
+trait AllRoutes extends HttpService with ProductsService with CategoryService {
+
 
   def allRoutes : Route =
     pathPrefix("api" / "v1") {
-      productsRoute
+      productsRoute ~ categoryRoutes
     }
 
 }

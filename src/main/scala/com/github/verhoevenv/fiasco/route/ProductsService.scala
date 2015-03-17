@@ -2,19 +2,13 @@ package com.github.verhoevenv.fiasco.route
 
 import akka.actor.{ActorRef, Props}
 import akka.pattern.ask
-import akka.util.Timeout
 import com.github.verhoevenv.fiasco.request.ProductsRequestActor
 import com.github.verhoevenv.fiasco.request.ProductsRequestActor.{AllProducts, Product}
 import spray.http._
 import spray.routing._
 
-import scala.concurrent.ExecutionContext
-import scala.concurrent.duration._
 
-
-trait ProductsService extends HttpService {
-  implicit val timeout = Timeout(5.seconds)
-  implicit val executionContext : ExecutionContext = actorRefFactory.dispatcher
+trait ProductsService extends HttpService with HandlerImplicits {
 
   val productsRoute : Route =
     path("products") {
