@@ -1,8 +1,7 @@
 package com.github.verhoevenv.fiasco.request
 
 import akka.actor.Actor
-import akka.actor.Actor.Receive
-import com.github.verhoevenv.fiasco.request.ProductsRequestActor.{Product, AllProducts}
+import com.github.verhoevenv.fiasco.request.ProductsRequestActor.{AllProducts, Product}
 
 object ProductsRequestActor {
   case class AllProducts()
