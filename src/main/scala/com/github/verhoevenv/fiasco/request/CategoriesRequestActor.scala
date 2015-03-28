@@ -1,24 +1,25 @@
 package com.github.verhoevenv.fiasco.request
 
 import akka.actor.Actor
-import com.github.verhoevenv.fiasco.request.CategoriesRequestActor.{AllCategories, Category}
+import com.github.verhoevenv.fiasco.domain.Category
+import com.github.verhoevenv.fiasco.request.CategoriesRequests.{AllCategoriesRequest, CategoryRequest}
 
-object CategoriesRequestActor {
-  case class AllCategories()
-  case class Category(id: Int)
+object CategoriesRequests {
+  case class AllCategoriesRequest()
+  case class CategoryRequest(id: Int)
 }
 
-class CategoriesRequestActor extends Actor {
-  override def receive = {
-    case AllCategories() => sender() ! "A list of all categories"
+trait CategoriesRepo {
+  val categories = List(Category(1, "ScalaCheese", "/blub"), Category(2, "ScalaHam", "/blub"))
 
-    case Category(id) => {
-      val result = if(id < 1000) {
-        Some("Received GET request for category " + id)
-      } else {
-        None
-      }
-      sender() ! result
-    }
+  def allCategories : List[Category] = categories
+
+  def category(id: Int) : Option[Category] = categories.find(cat => cat.id == id)
+}
+
+class CategoriesRequestActor extends Actor with CategoriesRepo {
+  override def receive = {
+    case AllCategoriesRequest() => sender() ! allCategories
+    case CategoryRequest(id) => sender() ! category(id)
   }
 }
