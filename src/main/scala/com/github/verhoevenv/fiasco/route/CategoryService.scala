@@ -7,7 +7,6 @@ import com.github.verhoevenv.fiasco.transform.json.JsonCategory
 import com.github.verhoevenv.fiasco.transform.json.JsonCategory._
 import spray.http._
 import spray.routing._
-import spray.json._
 import spray.httpx.SprayJsonSupport._
 
 import com.github.verhoevenv.fiasco.transform.json.CategoryJsonProtocol._

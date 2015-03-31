@@ -1,6 +1,5 @@
 package com.github.verhoevenv.fiasco
 
-import com.github.verhoevenv.fiasco.domain.Category
 import com.github.verhoevenv.fiasco.transform.json.CategoryJsonProtocol._
 import com.github.verhoevenv.fiasco.route.AllRoutes
 import com.github.verhoevenv.fiasco.transform.json.JsonCategory

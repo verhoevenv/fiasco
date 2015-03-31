@@ -1,9 +1,7 @@
 package com.github.verhoevenv.fiasco.route
 
 import akka.actor.Actor
-import spray.http.StatusCodes
 import spray.routing._
-import spray.util.LoggingContext
 
 
 class AllRoutesActor extends Actor with AllRoutes {
@@ -19,7 +17,6 @@ class AllRoutesActor extends Actor with AllRoutes {
 }
 
 trait AllRoutes extends HttpService with ProductsService with CategoryService {
-
 
   def allRoutes : Route =
     pathPrefix("api" / "v1") {

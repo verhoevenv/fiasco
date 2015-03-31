@@ -38,7 +38,7 @@ object JsonProductProtocol extends DefaultJsonProtocol {
 
     def read(value: JsValue) = {
       value.asJsObject.getFields("id", "categoryId", "name", "composition", "sauces", "type", "price") match {
-        case Seq(JsNumber(id), JsNumber(categoryId), JsString(name), jsComposition, jsSauces, JsString(internalType), JsNumber(price)) => {
+        case Seq(JsNumber(id), JsNumber(categoryId), JsString(name), jsComposition, jsSauces, JsString(internalType), JsNumber(price)) =>
           val composition: ProductComposition = ProductCompositionJsonProtocol.productCompositionFormat.read(jsComposition)
           val sauces: ProductSauces = ProductSaucesJsonProtocol.productSaucesFormat.read(jsSauces)
 
@@ -51,7 +51,6 @@ object JsonProductProtocol extends DefaultJsonProtocol {
             internalType,
             price.toInt
           )
-        }
         case _ => throw new DeserializationException("Color expected")
       }
     }

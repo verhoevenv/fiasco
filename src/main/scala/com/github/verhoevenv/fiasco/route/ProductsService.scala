@@ -5,7 +5,6 @@ import akka.pattern.ask
 import com.github.verhoevenv.fiasco.domain.Product
 import com.github.verhoevenv.fiasco.request.ProductsRequestActor
 import com.github.verhoevenv.fiasco.request.ProductsRequestActor.{ProductRequest, AllProducts, ProductsInCategoryRequest}
-import com.github.verhoevenv.fiasco.transform.json.JsonProduct
 import com.github.verhoevenv.fiasco.transform.json.JsonProduct._
 import spray.http._
 import spray.routing._

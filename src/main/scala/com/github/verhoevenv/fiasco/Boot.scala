@@ -28,7 +28,7 @@ object Boot extends App {
 
   bindResult onComplete {
     case Success(CommandFailed(Http.Bind(_, _, _, _, _))) => system.shutdown()
-    case Success(_) => {}
+    case Success(_) =>
     case Failure(failed) => system.shutdown()
   }
 }
