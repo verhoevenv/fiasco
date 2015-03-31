@@ -8,5 +8,7 @@ trait ProductsRepo extends CategoriesRepo {
 
   def allProducts : List[Product] = products
 
-  def product(id: Int) : Option[Product] = products.find(cat => cat.id == id)
+  def product(id: Int) : Option[Product] = products.find(p => p.id == id)
+
+  def productInCategory(id: Int) : List[Product] = products.filter(p => p.category.id == id)
 }

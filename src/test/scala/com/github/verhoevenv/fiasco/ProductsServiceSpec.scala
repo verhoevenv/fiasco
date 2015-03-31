@@ -32,6 +32,16 @@ class ProductsServiceSpec extends Specification with Specs2RouteTest with AllRou
         status must be(StatusCodes.BadRequest)
       }
     }
+
+    "return a list of matching products when queried with category id" in {
+      Get("/api/v1/products/?categoryId=1") ~> allRoutes ~> check {
+        val products: List[JsonProduct] = responseAs[List[JsonProduct]]
+        products.foreach {
+          p => p.categoryId must beEqualTo(1)
+        }
+        products.size should be greaterThanOrEqualTo 1
+      }
+    }
   }
 
 
