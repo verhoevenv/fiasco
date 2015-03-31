@@ -1,9 +1,12 @@
 package com.github.verhoevenv.fiasco
 
 import com.github.verhoevenv.fiasco.route.AllRoutes
+import com.github.verhoevenv.fiasco.transform.json.JsonProduct
+import com.github.verhoevenv.fiasco.transform.json.JsonProductProtocol._
 import org.specs2.mutable.Specification
 import spray.testkit.Specs2RouteTest
 import spray.http._
+import spray.json._
 
 class ProductsServiceSpec extends Specification with Specs2RouteTest with AllRoutes {
   def actorRefFactory = system
@@ -12,13 +15,15 @@ class ProductsServiceSpec extends Specification with Specs2RouteTest with AllRou
 
     "return a list of products when queried without id" in {
       Get("/api/v1/products") ~> allRoutes ~> check {
-        responseAs[String] must contain("products")
+        val products: List[JsonProduct] = responseAs[List[JsonProduct]]
+        products.size should be greaterThan 1
       }
     }
 
     "return a single product when queried with a known id" in {
       Get("/api/v1/products/1") ~> allRoutes ~> check {
-        responseAs[String] must contain("1")
+        val product: JsonProduct = responseAs[JsonProduct]
+        product.id must beEqualTo(1)
       }
     }
 
@@ -28,4 +33,11 @@ class ProductsServiceSpec extends Specification with Specs2RouteTest with AllRou
       }
     }
   }
+
+
+  implicit def HttpEntityToCategory(httpEntity: HttpEntity): JsonProduct =
+    httpEntity.asString(HttpCharsets.`UTF-8`).parseJson.convertTo[JsonProduct]
+
+  implicit def HttpEntityToListOfCategories(httpEntity: HttpEntity): List[JsonProduct] =
+    httpEntity.asString(HttpCharsets.`UTF-8`).parseJson.convertTo[List[JsonProduct]]
 }

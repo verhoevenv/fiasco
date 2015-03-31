@@ -1,24 +1,17 @@
 package com.github.verhoevenv.fiasco.request
 
 import akka.actor.Actor
-import com.github.verhoevenv.fiasco.request.ProductsRequestActor.{AllProducts, Product}
+import com.github.verhoevenv.fiasco.domain.ProductsRepo
+import com.github.verhoevenv.fiasco.request.ProductsRequestActor.{ProductRequest, AllProducts}
 
 object ProductsRequestActor {
   case class AllProducts()
-  case class Product(id: Int)
+  case class ProductRequest(id: Int)
 }
 
-class ProductsRequestActor extends Actor {
+class ProductsRequestActor extends Actor with ProductsRepo {
   override def receive = {
-    case AllProducts() => sender() ! "A list of all products"
-
-    case Product(id) => {
-      val result = if(id < 1000) {
-        Some("Received GET request for product " + id)
-      } else {
-        None
-      }
-      sender() ! result
-    }
+    case AllProducts() => sender() ! allProducts
+    case ProductRequest(id) => sender() ! product(id)
   }
 }

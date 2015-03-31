@@ -1,8 +1,9 @@
 package com.github.verhoevenv.fiasco
 
 import com.github.verhoevenv.fiasco.domain.Category
-import com.github.verhoevenv.fiasco.domain.CategoryJsonProtocol._
+import com.github.verhoevenv.fiasco.transform.json.CategoryJsonProtocol._
 import com.github.verhoevenv.fiasco.route.AllRoutes
+import com.github.verhoevenv.fiasco.transform.json.JsonCategory
 import org.specs2.mutable.Specification
 import spray.http._
 import spray.json._
@@ -15,14 +16,14 @@ class CategoryServiceSpec extends Specification with Specs2RouteTest with AllRou
 
     "return a list of categories when queried without id" in {
       Get("/api/v1/categories") ~> allRoutes ~> check {
-        val categories = responseAs[List[Category]]
+        val categories = responseAs[List[JsonCategory]]
         categories.size should be greaterThan 1
       }
     }
 
     "return a single category when queried with a known id" in {
       Get("/api/v1/categories/1") ~> allRoutes ~> check {
-        val category = responseAs[Category]
+        val category = responseAs[JsonCategory]
         category.id must beEqualTo(1)
       }
     }
@@ -35,9 +36,9 @@ class CategoryServiceSpec extends Specification with Specs2RouteTest with AllRou
   }
 
 
-  implicit def HttpEntityToCategory(httpEntity: HttpEntity): Category =
-    httpEntity.asString(HttpCharsets.`UTF-8`).parseJson.convertTo[Category]
+  implicit def HttpEntityToCategory(httpEntity: HttpEntity): JsonCategory =
+    httpEntity.asString(HttpCharsets.`UTF-8`).parseJson.convertTo[JsonCategory]
 
-  implicit def HttpEntityToListOfCategories(httpEntity: HttpEntity): List[Category] =
-    httpEntity.asString(HttpCharsets.`UTF-8`).parseJson.convertTo[List[Category]]
+  implicit def HttpEntityToListOfCategories(httpEntity: HttpEntity): List[JsonCategory] =
+    httpEntity.asString(HttpCharsets.`UTF-8`).parseJson.convertTo[List[JsonCategory]]
 }

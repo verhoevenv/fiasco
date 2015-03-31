@@ -6,7 +6,3 @@ case class Category(id: Int, name: String, pathToImg: String) {
 
 }
 
-
-object CategoryJsonProtocol extends DefaultJsonProtocol {
-  implicit val categoryFormat: RootJsonFormat[Category] = jsonFormat3(Category)
-}
