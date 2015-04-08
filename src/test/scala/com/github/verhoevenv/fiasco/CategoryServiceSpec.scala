@@ -14,21 +14,21 @@ class CategoryServiceSpec extends Specification with Specs2RouteTest with AllRou
   "CategoryService" should {
 
     "return a list of categories when queried without id" in {
-      Get("/api/v1/categories") ~> allRoutes ~> check {
+      Get("/v1/categories") ~> allRoutes ~> check {
         val categories = responseAs[List[JsonCategory]]
         categories.size should be greaterThan 1
       }
     }
 
     "return a single category when queried with a known id" in {
-      Get("/api/v1/categories/1") ~> allRoutes ~> check {
+      Get("/v1/categories/1") ~> allRoutes ~> check {
         val category = responseAs[JsonCategory]
         category.id must beEqualTo(1)
       }
     }
 
     "not handle a category with an unknown id" in {
-      Get("/api/v1/categories/1337") ~> allRoutes ~> check {
+      Get("/v1/categories/1337") ~> allRoutes ~> check {
         status must be(StatusCodes.BadRequest)
       }
     }

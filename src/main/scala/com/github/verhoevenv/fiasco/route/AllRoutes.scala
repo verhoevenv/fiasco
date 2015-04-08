@@ -19,7 +19,7 @@ class AllRoutesActor extends Actor with AllRoutes {
 trait AllRoutes extends HttpService with ProductsService with CategoryService {
 
   def allRoutes : Route =
-    pathPrefix("api" / "v1") {
+    pathPrefix("v1") {
        categoryRoutes ~ productsRoute
     }
 

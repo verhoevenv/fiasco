@@ -14,27 +14,27 @@ class ProductsServiceSpec extends Specification with Specs2RouteTest with AllRou
   "ProductsService" should {
 
     "return a list of products when queried without id" in {
-      Get("/api/v1/products") ~> allRoutes ~> check {
+      Get("/v1/products") ~> allRoutes ~> check {
         val products: List[JsonProduct] = responseAs[List[JsonProduct]]
         products.size should be greaterThan 1
       }
     }
 
     "return a single product when queried with a known id" in {
-      Get("/api/v1/products/1") ~> allRoutes ~> check {
+      Get("/v1/products/1") ~> allRoutes ~> check {
         val product: JsonProduct = responseAs[JsonProduct]
         product.id must beEqualTo(1)
       }
     }
 
     "not handle a product with an unknown id" in {
-      Get("/api/v1/products/1337") ~> allRoutes ~> check {
+      Get("/v1/products/1337") ~> allRoutes ~> check {
         status must be(StatusCodes.BadRequest)
       }
     }
 
     "return a list of matching products when queried with category id" in {
-      Get("/api/v1/products/?categoryId=1") ~> allRoutes ~> check {
+      Get("/v1/products/?categoryId=1") ~> allRoutes ~> check {
         val products: List[JsonProduct] = responseAs[List[JsonProduct]]
         products.foreach {
           p => p.categoryId must beEqualTo(1)
