@@ -16,12 +16,18 @@ object JsonProduct {
 case class JsonProduct(id: Int, categoryId: Int, name: String, composition: ProductComposition, sauces: ProductSauces, internalType: String, price: Int) {
 }
 
-object ProductCompositionJsonProtocol extends DefaultJsonProtocol {
-  implicit val productCompositionFormat: RootJsonFormat[ProductComposition] = jsonFormat1(ProductComposition)
+object ProductCompositionJsonProtocol extends spray.json.DefaultJsonProtocol {
+  implicit val productCompositionFormat: RootJsonFormat[ProductComposition] = new RootJsonFormat[ProductComposition] {
+    def write(obj: ProductComposition): JsValue = listFormat[String].write(obj.composition)
+    def read(json: JsValue): ProductComposition = ProductComposition(listFormat[String].read(json))
+  }
 }
 
 object ProductSaucesJsonProtocol extends DefaultJsonProtocol {
-  implicit val productSaucesFormat: RootJsonFormat[ProductSauces] = jsonFormat1(ProductSauces)
+  implicit val productSaucesFormat: RootJsonFormat[ProductSauces] = new RootJsonFormat[ProductSauces] {
+    def write(obj: ProductSauces): JsValue = listFormat[String].write(obj.sauces)
+    def read(json: JsValue): ProductSauces = ProductSauces(listFormat[String].read(json))
+  }
 }
 
 object JsonProductProtocol extends DefaultJsonProtocol {
